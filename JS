@@ -1,0 +1,63 @@
+    const form = document.getElementById('transaction-form');
+    const transactionsList = document.getElementById('transactions');
+    
+    // Load transactions from local storage
+    const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    updateTransactionsDOM();
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const type = document.getElementById('type').value;
+        const description = document.getElementById('description').value.trim();
+        const amount = parseFloat(document.getElementById('amount').value.trim());
+        
+        if (description === '' || isNaN(amount)) {
+            alert('Please fill out all fields correctly.');
+            return;
+        }
+        
+        const transaction = {
+            type,
+            description,
+            amount
+        };
+        
+        transactions.push(transaction);
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+        updateTransactionsDOM();
+        
+        // Clear form fields
+        document.getElementById('description').value = '';
+        document.getElementById('amount').value = '';
+    });
+    
+    function updateTransactionsDOM() {
+        transactionsList.innerHTML = '';
+        
+        transactions.forEach(transaction => {
+            const transactionElement = document.createElement('div');
+            transactionElement.classList.add('transaction');
+            transactionElement.innerHTML = `
+                <span>Type: ${transaction.type}</span><br>
+                <span>Description: ${transaction.description}</span><br>
+                <span>Amount: ${transaction.amount}</span>
+            `;
+            transactionsList.appendChild(transactionElement);
+        });
+    }
+
+
+    // Array of month names
+var month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+// Get current date
+var currentDate = new Date();
+
+// Get current month number (0 for January, 1 for February, etc.)
+var currentMonthNumber = currentDate.getMonth();
+
+// Get current month string representation
+var currentMonthString = month[currentMonthNumber];
+
+document.getElementById("showdate").innerHTML = currentMonthString;
